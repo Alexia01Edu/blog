@@ -15,8 +15,7 @@ function insere(string $entidade, array $dados) : bool
 
     $stmt = mysqli_prepare($conexao, $instrucao);
 
-    eval('mysqli_stmt_bind_param($stmt, \'' . implode('',$tipo) . '\', $'
-    . implode(', $', array_keys($dados)) . ');');
+    eval('mysqli_stmt_bind_param($stmt, \'' . implode('',$tipo) . '\', $' . implode(', $', array_keys($dados)) . ');');
 
     mysqli_stmt_execute($stmt);
 
@@ -45,7 +44,7 @@ function atualiza(string $entidade, array $dados, array $criterio = []) : bool
         $dado = $expressao[count($expressao) -1];
 
         $tipo[] = gettype($dado) [0];
-        $expressao[count($expressao) -1];
+        $expressao[count($expressao) - 1] = '?';
         $coringa_criterio[] = $expressao;
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
@@ -96,7 +95,7 @@ function deleta(string $entidade, array $criterio = []) : bool
         $dado = $expressao[count($expressao) -1];
 
         $tipo[] = gettype($dado) [0];
-        $expressao [count($expressao) -1] = '?';
+        $expressao[count($expressao) -1] = '?';
         $coringa_criterio[] = $expressao;
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
@@ -133,7 +132,7 @@ function deleta(string $entidade, array $criterio = []) : bool
     return $retorno;
     }
 
-    function buscar(string $entidade, array $campos = ['*'], array $criterio = [], string $ordem = null ) : bool
+    function buscar(string $entidade, array $campos = ['*'], array $criterio = [], string $ordem = null ) : array
     {
         $retorno = false;
     
@@ -143,7 +142,7 @@ function deleta(string $entidade, array $criterio = []) : bool
             $dado = $expressao[count($expressao) -1];
     
             $tipo[] = gettype($dado) [0];
-            $expressao [count($expressao) -1] = '?';
+            $expressao[count($expressao) - 1] = '?';
             $coringa_criterio[] = $expressao;
     
             $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
@@ -183,6 +182,8 @@ function deleta(string $entidade, array $criterio = []) : bool
         mysqli_stmt_close($stmt);
     
         desconecta($conexao);
+
+        $retorno = $retorno;
     
         return $retorno;
         }
