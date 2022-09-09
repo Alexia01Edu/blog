@@ -44,7 +44,7 @@ function atualiza(string $entidade, array $dados, array $criterio = []) : bool
         $dado = $expressao[count($expressao) -1];
 
         $tipo[] = gettype($dado) [0];
-        $expressao[count($expressao) - 1] = '?';
+        $expressao[count($expressao) -1] = '?';
         $coringa_criterio[] = $expressao;
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
@@ -56,6 +56,7 @@ function atualiza(string $entidade, array $dados, array $criterio = []) : bool
         $campos_criterio[] = $nome_campo;
         $$nome_campo = $dado;
     }
+    
     $instrucao = update($entidade, $coringa_dados, $coringa_criterio);
 
     $conexao = conecta();

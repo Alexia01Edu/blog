@@ -45,7 +45,7 @@
                             </div>
                             <div class="text-right">
                                 <button class="btn btn-success"
-                                            type="sbmit">Acessar</button>
+                                            type="submit">Acessar</button>
                             </div>
                         </form>
                     </div>

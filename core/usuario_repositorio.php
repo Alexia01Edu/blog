@@ -1,123 +1,122 @@
 <?php
-session_start();
-require_once '../includes/funcoes.php';
-require_once 'conexao_mysql.php';
-require_once 'sql.php';
-require_once 'mysql.php';
-$salt = '$exemplosaltifsp';
+ session_start();
+ require_once '../includes/funcoes.php';
+ require_once 'conexao_mysql.php';
+ require_once 'sql.php';
+ require_once 'mysql.php';
+ $salt = '$exemplosaltifsp';
 
-foreach($_POST as $indice => $dado){
-    $$indice = limparDados($dado);
-}
+ foreach($_POST as $indice => $dado) {
+     $$indice = limparDados($dado);
+ }
 
-foreach($_GET as $indice => $dado){
-    $$indice = limparDados($dado);
-}
+ foreach($_GET as $indice => $dado) {
+     $$indice = limparDados($dado);
+ }
 
-switch($acao){
-    case 'insert':
-        $dados = [
-            'nome' => $nome,
-            'email' =>$email,
-            'senha' => crypt($senha, $salt)
-        ];
+ switch($acao) {
+     case 'insert':
+         $dados = [
+             'nome' => $nome,
+             'email' => $email,
+             'senha' => crypt($senha,$salt)
+         ];
 
-        insere(
-            'usuario',
-            $dados
-        );
+         insere(
+             'usuario',
+             $dados
+         );
 
-        break;
+         break;
+     case 'update':
+         $id = (int)$id;
+         $dados = [
+             'nome' => $nome,
+             'email' => $email
+         ];
 
-        case 'update':
-            $id = (int)$id;
-            $dados = [
-                'nome' => $nome,
-                'email' => $email
-            ];
+         $criterio = [
+             ['id', '=', $id]
+         ];
 
-            $criterio = [
-                ['id', '-',$id]
-            ];
-            atualiza(
-                'usuario',
-                $dados,
-                $criterio
-            );
-            break;
+         atualiza(
+             'usuario',
+             $dados,
+             $criterio
+         );
 
-            case 'login':
-                $criterio =[
-                    ['email', '=', $email],
-                    ['AND', 'ativo', '=', 1]
-                ];
+         break;
+     case 'login':
+         $criterio = [
+             ['email', '=', $email],
+             ['AND', 'ativo', '=', 1]
+         ];
 
-                $retorno = buscar(
-                    'usuario',
-                    ['id', 'nome', 'email', 'senha', 'adm'],
-                    $criterio
-                );
+         $retorno = buscar(
+             'usuario',
+             ['id', 'nome', 'email', 'senha', 'adm'],
+             $criterio
+         );
 
-                if(count($retorno)>0){
-                    if (crypt($senha,$salt) == $retorno[0] ['senha']){
-                        $_SESSION['login'] ['usuario'] = $retorno[0];
-                        if(!empty($_SESSION['url_retorno'])){
-                            header('Location: ' . $_SESSION['url_retorno']);
-                            $_SESSION['url_retorno'] = '';
-                            exit;
-                        }
-                    }
-                }
-                break;
-                
-                case 'logout':
-                    session_destroy();
-                    break;
-                
-                    case 'status':
-                        $id = (int)$id;
-                        $valor = (int)$valor;
+         if(count($retorno) > 0) {
+             if(crypt($senha,$salt) == $retorno[0]['senha']) {
+                 $_SESSION['login']['usuario'] = $retorno[0];
+                 if(!empty($_SESSION['url_retorno'])) {
+                     header('Location: ' . $_SESSION['url_retorno']);
+                     $_SESSION['url_retorno'] = '';
+                     exit;
+                 }
+             }
+         }
 
-                        $dados = [
-                            'ativo' => $valor
-                        ];
+         break;
+     case 'logout':
+         session_destroy();
+         break;
+     case 'status':
+         $id = (int)$id;
+         $valor = (int)$valor;
 
-                        $criterio = [
-                            ['id', '=', $id]
-                        ];
+         $dados = [
+             'ativo' => $valor
+         ];
 
-                        atualiza(
-                            'usuario',
-                            $dados,
-                            $criterio
-                        );
-                        
-                        header('Location: ../usuarios.php');
-                        exit;
-                        break;
+         $criterio = [
+             ['id', '=', $id]
+         ];
 
-                        case 'adm':
-                            $id = (int)$id;
-                            $valor = (int)$valor;
+         atualiza(
+             'usuario',
+             $dados,
+             $criterio
+         );
 
-                            $dados = [
-                                'adm' => $valor
-                            ];
+         header('Location: ../usuarios.php');
+         exit;
+         break;
+     case 'adm':
+         $id = (int)$id;
+         $valor = (int)$valor;
 
-                            $criterio = [
-                                ['id', '=', $id]
-                            ];
+         $dados = [
+             'adm' => $valor
+         ];
 
-                            atualiza(
-                                'usuario',
-                                $dados,
-                                $criterio
-                            );
+         $criterio = [
+             ['id', '=', $id]
+         ];
 
-                            header('Location: ../usuarios.phph');
-                            exit;
-                            break;
-                
-}
-header('Location: ../index.php');
+         atualiza(
+             'usuario',
+             $dados,
+             $criterio
+         );
+
+         header('Location: ../usuarios.php');
+         exit;
+         break;
+ }
+ header('Location: ../index.php');
+
+ //http://localhost/blog/core/usuario_repositorio.php
 ?>
