@@ -7,7 +7,12 @@ require_once 'sql.php';
 require_once 'mysql.php';
 
 foreach($_POST as $indice => $dado){
+//Valores que chegam pelo método post 
+//enquanto percorre a array $$_POST, também  pega o valor da sua chave.
+//Um valor é pego a cada repetição ou iteração.
     $$indice = limparDados($dado);
+// A variavel indice, tem nome variavel, ou seja, o nome mude muda acada iteração
+//o valor de $dado sera o nome do $indice 
 }
 
 foreach($_GET as $indice => $dado){
@@ -15,9 +20,12 @@ foreach($_GET as $indice => $dado){
 }
 
 $id = (int)$id;
-
+// Pegar o id transformar em int e armazenar em id 
 switch($acao){
+    //switch - função de repetição
     case 'insert':
+        //caso seja para inserir novo dados
+        //função sql.php
         $dados = [
             'titulo' => $titulo,
             'texto' => $texto,
@@ -29,10 +37,14 @@ switch($acao){
             'post',
             $dados
         );
+        //função (Mysql.php) 'insere' parâmetros: string 'post' (tabela), array $dados;
+        //function insere(string $entidade, array $dados) : bool 
 
         break;
 
         case 'update':
+            //caso seja para atualizar dados existentes
+            //função sql.php
             $dados = [
                 'titulo' => $titulo,
                 'texto' => $texto,
@@ -53,7 +65,8 @@ switch($acao){
             break;
 
             case 'delete':
-            
+            //caso seja para deletar dados
+            //função sql.php
                 $criterio = [
                     ['id', '=', $id]
                 ];

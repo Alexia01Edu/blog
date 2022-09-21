@@ -36,6 +36,11 @@
                         require_once 'core/mysql.php';
 
                         if(isset($_SESSION['login'])) {
+                            //A função isset() é utilizada para a checagem de determinada variável quando precisamos saber se ela está vazia 
+                            //ou já está configurada com algum valor.
+                            //no caso de vazia (null) retorna false
+                            //se não, retorna true, zero (0) não é considerado um valor null
+                            //se o usuario estiver logado
                            $id = (int) $_SESSION['login']['usuario']['id'];
 
                            $criterio = [
@@ -47,6 +52,7 @@
                                 ['id', 'nome', 'email'],
                                 $criterio
                            );
+                           //função buscar - mysql.php
 
                            $entidade = $retorno[0];
                         }
@@ -56,25 +62,47 @@
                     <form method="post" action="core/usuario_repositorio.php">
                         <input type="hidden" name="acao"
                                 value="<?php echo empty($id) ? 'insert' : 'update' ?>">
+                        <!--
+                        //echo empty($id) ? 'insert' : 'update'
+                        // se o id estiver vazio então inserir dados (insert), se não então atualizar dados (update) 
+                        -->
                         <input type="hidden" name="id"
                                 value="<?php echo $entidade['id'] ?? '' ?>">
+                        <!--
+                        //echo $entidade['id'] ?? ''
+                        //pegar o id na tabela entidade no caso de atualizar dados (update) 
+                        -->
                         <div class="form-group">
                             <label for="nome">Nome</label>
                             <input class="form-control" type="text" 
                                 require="required" id="nome" name="nome"
                                 value="<?php echo $entidade['nome'] ?? '' ?>">
+                        <!--
+                        //echo $entidade['nome'] ?? ''
+                        // nome armazenado na tabela $entidade (caso houver), e continua sendo usado se não for modificado
+                        -->
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
                             <input class="form-control" type="text" 
                                 require="required" id="email" name="email"
                                 value="<?php echo $entidade['email'] ?? '' ?>">
+                        <!--
+                        //echo $entidade['email'] ?? ''
+                        // email armazenado na tabela $entidade (caso houver) e continua sendo usado se não for modificado
+                        -->
                         </div>
                         <?php if(!isset($_SESSION['login'])) : ?>
+                          <!--  
+                            *apenas se o usuario não estiver logado
+                            *campo com valor null -->
                         <div class="form-group">
                             <label for="senha">Senha</label>
                             <input class="form-control" type="password" 
                                 require="required" id="senha" name="senha">
+                        <!--
+                         criar senha
+                        -->
                         </div>
                         <?php endif; ?>
                         <div class="text-right">
