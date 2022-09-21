@@ -34,16 +34,23 @@
                         require_once 'core/sql.php';
                         require_once 'core/mysql.php';
                         foreach($_GET as $indice => $dado) {
+                        //Valores que chegam pelo método $_GET 
+                        //enquanto percorre a array $_GET, também  pega o valor da sua chave.
+                        //Um valor é pego a cada repetição ou iteração.
                             $$indice = limparDados($dado);
+                        //função limparDados, retira tags indesejadas
+                        // A variavel indice, tem nome variavel, ou seja, o nome muda a cada iteração
+                        //o valor de $dado sera o nome do $indice 
                         }
 
                         if(!empty($id)) {
+                           // se id não estiver vazio
                             $id = (int)$id;
-
+                            //pegar o id do usuario
                             $criterio = [
                                 ['id', '=', $id]
                             ];
-
+                            //armazenar dentro de criterio
                             $retorno = buscar(
                                 'post',
                                 ['*'],
@@ -57,13 +64,25 @@
                     <form method="post" action="core/post_repositorio.php">
                         <input type="hidden" name="acao"
                                 value="<?php echo empty($id) ? 'insert' : 'update' ?>">
+                        <!--
+                        //echo empty($id) ? 'insert' : 'update'
+                        //se o id estiver vazio então inserir dados (insert), se não então atualizar dados (update) 
+                        -->
                         <input type="hidden" name="id"
                                 value="<?php echo $entidade['id'] ?? '' ?>">
+                        <!--
+                        //echo $entidade['id'] ?? ''
+                        //utilizar o id armazenado na tabela $entidade (caso houver)
+                        -->
                         <div class="form-group">
                             <label for="titulo">Título</label>
                             <input class="form-control" type="text" 
                                 require="required" id="titulo" name="titulo"
                                 value="<?php echo $entidade['titulo'] ?? '' ?>">
+                        <!--
+                        //echo $entidade['titulo'] ?? ''
+                        //caso houver, utilizar o titulo armazenado na tabela $entidad (continua o mesmo se não for modificado)
+                        -->
                         </div>
                         <div class="form-group">
                             <label for="texto">Texto</label>
@@ -71,6 +90,10 @@
                                 require="required" id="texto" name="texto" rows="5">
                                 <?php echo $entidade['texto'] ?? '' ?>
                             </textarea>
+                        <!--
+                        //echo $entidade['texto'] ?? ''
+                        //caso houver, utilizar o texto armazenado na tabela $entidade, (continua o mesmo se não for modificado)
+                        -->
                         </div>
                         <div class="form-group">
                             <label for="texto">Postar em</label>

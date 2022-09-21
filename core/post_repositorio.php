@@ -7,15 +7,19 @@ require_once 'sql.php';
 require_once 'mysql.php';
 
 foreach($_POST as $indice => $dado){
-//Valores que chegam pelo método post 
-//enquanto percorre a array $$_POST, também  pega o valor da sua chave.
+//Valores que chegam pelo método $_POST 
+//enquanto percorre a array $_POST, também  pega o valor da sua chave.
 //Um valor é pego a cada repetição ou iteração.
     $$indice = limparDados($dado);
+//função limparDados, retira tags indesejadas
 // A variavel indice, tem nome variavel, ou seja, o nome mude muda acada iteração
 //o valor de $dado sera o nome do $indice 
 }
 
 foreach($_GET as $indice => $dado){
+//Valores que chegam pelo método $_GET 
+//enquanto percorre a array $_GET, também  pega o valor da sua chave.
+//Um valor é pego a cada repetição ou iteração.
     $$indice = limparDados($dado);
 }
 

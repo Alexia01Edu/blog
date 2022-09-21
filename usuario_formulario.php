@@ -79,7 +79,7 @@
                                 value="<?php echo $entidade['nome'] ?? '' ?>">
                         <!--
                         //echo $entidade['nome'] ?? ''
-                        // nome armazenado na tabela $entidade (caso houver), e continua sendo usado se não for modificado
+                        //caso houver, utiliza nome armazenado na tabela $entidade (continua o mesmo se não for modificado)
                         -->
                         </div>
                         <div class="form-group">
@@ -89,7 +89,7 @@
                                 value="<?php echo $entidade['email'] ?? '' ?>">
                         <!--
                         //echo $entidade['email'] ?? ''
-                        // email armazenado na tabela $entidade (caso houver) e continua sendo usado se não for modificado
+                        // caso houver, utiliza o email armazenado na tabela $entidade (continua o mesmo se não for modificado)
                         -->
                         </div>
                         <?php if(!isset($_SESSION['login'])) : ?>
