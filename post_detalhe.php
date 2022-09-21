@@ -22,10 +22,16 @@ $posts = buscar (
     [
         ['id', '=', $post]
     ]
+
 );
+//buscar post por titulo, data, texto, nome do usuario e id;
 $post = $posts[0];
+//post recebe o array posts na posição zero
 $data_post = date_create($post['data_postagem']);
+//recebe a data da postagem armnazenado na variavel $post
+//data está no formato padrão ingles
 $data_post = date_format($data_post, 'd/m/Y H:i:s');
+//data_format: modifica o formato da data para o formato brasileiro
 
 ?>
 <!DOCTYPE html>
@@ -56,12 +62,16 @@ $data_post = date_format($data_post, 'd/m/Y H:i:s');
             <div class="col-md-10" style="padding-top: 50px;">
                 <div class="card-body">
                     <h5 class="card-title"><?php echo $post['titulo']?></h5>
+                    <!-- mostra o titulo do post -->
                     <h5 class="card-subtitle mb-2 text-muted">
                         <?php echo $data_post?> Por <?php echo $post['nome']?>
                     </h5>
+                    <!-- mostra a data formada da postagem, seguido do nome do usuario -->
                     <div class="cart-text">
                         <?php echo html_entity_decode($post['texto']) ?>
                     </div>
+                    <!--desfaz o efeito do htmlentities() da função limpar dados, 
+                    ela decodifica as entidades HTML e as tranforma em caracteres de novo-->
                 </div>
             </div>
         </div>

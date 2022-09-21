@@ -20,6 +20,7 @@
              'nome' => $nome,
              'email' => $email,
              'senha' => crypt($senha,$salt)
+            //senha fica cripytografada
          ];
 
          insere(
@@ -47,19 +48,26 @@
 
          break;
      case 'login':
+        //se input name='login' então 
          $criterio = [
              ['email', '=', $email],
              ['AND', 'ativo', '=', 1]
          ];
+         //armazena o email na tabela usuario no campo email
+         //E coloca ativo igual a 1 na tabela do banco de dados
 
          $retorno = buscar(
              'usuario',
              ['id', 'nome', 'email', 'senha', 'adm'],
              $criterio
          );
-
+         //a função buscar, verifica na tabela usuario se aquele usuario existe;
+         //compara os valores do array criterio com os valores da tabela usuario
+         //retorna 1 se sim e 0 se não;
          if(count($retorno) > 0) {
+            //se o retorno for 1 ou seja se o usuario estiver cadastrado
              if(crypt($senha,$salt) == $retorno[0]['senha']) {
+                //se a senha descrypitografada for igual a senha digitada
                  $_SESSION['login']['usuario'] = $retorno[0];
                  if(!empty($_SESSION['url_retorno'])) {
                      header('Location: ' . $_SESSION['url_retorno']);
@@ -101,16 +109,20 @@
          $dados = [
              'adm' => $valor
          ];
+         // o array dados recebe a chave(campo) adm com o valor $valor
 
          $criterio = [
              ['id', '=', $id]
          ];
+         //criterio armazena o id
 
          atualiza(
              'usuario',
              $dados,
              $criterio
          );
+         // a função atualiza a tabela usuario com os novos dados
+         //no registro $criterio
 
          header('Location: ../usuarios.php');
          exit;

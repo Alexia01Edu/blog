@@ -37,6 +37,7 @@
                                 <input class="form-control" type="text" 
                                     require="required" id="email" name="email"
                                     value="<?php echo $entidade['email'] ?? '' ?>">
+                                <!--confirma, se o valor do campo email existe na tabela $entidade -->
                             </div>
                             <div class="form-group">
                                 <label for="senha">Senha</label>
