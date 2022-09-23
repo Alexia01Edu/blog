@@ -71,44 +71,93 @@ function insere(string $entidade, array $dados) : bool
     //mysqli_stmt_bind_param : junta a $intrução criada pelas funções com os dados inseridos no formulario
     //depois manda eles para o banco de dados.
     //eval : Executa uma string dada no parametro (), como se ela fosse um código PHP
+
     mysqli_stmt_execute($stmt);
+    //mysqli_stmt_execute: Executa uma instrução preparada, armazenada dentro da variavel $stmt
 
     $retorno = (boolean) mysqli_stmt_affected_rows($stmt);
+    //Retorna o número total de linhas alteradas(UPDATE), excluídas(DELETE), inseridas(INSERT) ou correspondidas(SELECT) pela última instrução executada;
 
     $_SESSION['errors'] = mysqli_stmt_error_list($stmt);
+    //Retorna uma lista de erros da última instrução executada
+    //Uma lista de erros, cada um como um array associativo contendo errno, error e sqlstate.
+    //EX:
+    //Variedade (
+    //[0] => Matriz
+        //(
+            //[errno] => 1146
+            //[sqlstate] => 42S02
+            //[erro] => A tabela 'world.myCountry' não existe
+        //))
 
     mysqli_stmt_close($stmt);
+    //Fecha uma instrução preparada
+    //Se a instrução atual tiver resultados pendentes ou não lidos, esta função os cancela para que a próxima instrução possa ser executada.
 
     desconecta($conexao);
-    
+    //função que desconecta o canco de dados, armazenado, na variavel $conexao
+
     return $retorno;
+    //retorna uma variavel bollean caso ?
 }
 
 function atualiza(string $entidade, array $dados, array $criterio = []) : bool
 {
-    $retorno = false;
+    //boll => boleano
+    //atualiza a tabela $entidade
 
+    $retorno = false;
+    
     foreach ($dados as $campo => $dado) {
+        //a cada iteração $dado recebe um valor do array $dado
         $coringa_dados[$campo] = '?';
+        //o array coringa_dado recebe esse valor na chave $campo correspondente
+        //EX: ($campo)nome=>($dado)Bruna
         $tipo[] = gettype($dado) [0];
+        //armazena o tipo de valor da variavel dado no array $tipo
+
         $$campo = $dado;
+        //o nome da variavel campo é variavel;  ?
     }
 
     foreach ($criterio as $expressao) {
-        $dado = $expressao[count($expressao) -1];
+    //para cada iteração do laço de repetição foreach(), o valor do elemento atual $criterio do array é atribuído a variavel $expressão. 
 
+        $dado = $expressao[count($expressao) -1];
+        //$dado recebe o valor do array $expressão na posição [número de elementos do array subtraindo 1, pois um array começa do elemento zero]
+        //count: Conta o número de elementos de uma variável, ou propriedades de um objeto;
+        //
         $tipo[] = gettype($dado) [0];
+        //armazena o tipo de dado da variavel $dado dentro do array tipo
+
         $expressao[count($expressao) -1] = '?';
+        //o array expressao recebe esse valor na posição correspondente [número de elementos do array subtraindo 1, pois um array começa do elemento zero]
+
         $coringa_criterio[] = $expressao;
+        //o array $coringa_criterio recebe o valor armazenado na variavel $expressão
 
         $nome_campo = (count($expressao) < 4) ? $expressao[0] : $expressao[1];
+        //Operador ternário: versão compacta do if.
+        //Primeiro declaramos a condição; logo após o sinal de interrogação (?), 
+        //o código a ser executado caso a condição seja verdadeira; 
+        //e depois dos dois pontos ':', o código a ser executado caso contrário.
+        //a variavel nome_campo recebe, $expressao na posição 0 se o numero de elementos da $variavel for menor que 4
+        //se não recebe $expressão na posição 1;
 
         if(isset($nome_campo)) {
+            //se a variavel campo existir e tiver valor diferente de null;
             $nome_campo = $nome_campo . '_' . rand();
+            //o valor da variavel da variavel $nome_campo é concatenado com '_' e depois com o valor gerado pela função rand();
+            //rand() = Gera um inteiro aleatório
+            //possui parametros min e max opcionais
+            //rand(int $min, int $max), o número inteiro gerado está entre ou é igual a esses dois números
         }
 
         $campos_criterio[] = $nome_campo;
+        //o array recebe o valor da variavel $nome_campo
+
         $$nome_campo = $dado;
+        //nome_campo tem nome variavel
     }
     
     $instrucao = update($entidade, $coringa_dados, $coringa_criterio);
