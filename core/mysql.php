@@ -1,7 +1,13 @@
 <?php
+//esse codigo tem as funções responsaveis por criar os parametros para as funções do sql.php
+//E as conecta com o banco de dados
+//depois as desconecta
+//utilizando as funções tipicas do mysql
+//
+
 function insere(string $entidade, array $dados) : bool
 {
-    
+    //
     $retorno = false;
 
     foreach ($dados as $campo => $dado) {
@@ -161,28 +167,42 @@ function atualiza(string $entidade, array $dados, array $criterio = []) : bool
     }
     
     $instrucao = update($entidade, $coringa_dados, $coringa_criterio);
-
+    //A variavel $intrução recebe o valor da função update do sql.php com os parametros entre parenteses()
+    //function update(string $entidade, array $dados, array $criterio = []): string
+   
     $conexao = conecta();
+    //$conexao recebe a conexão para banco de dados
 
     $stmt = mysqli_prepare($conexao, $instrucao);
+    //prepara a intrução
 
     if(isset($tipo)) {
+        //isset: se a variavel existir e for diferente de null
+
         $comando = 'mysqli_stmt_bind_param($stmt, ';
         $comando .= "'" . implode('', $tipo). "'";
         $comando .= ', $' . implode(', $', array_keys($dados));
         $comando .= ', $' . implode(', $', $campos_criterio);
         $comando .= ');';
+        //junta a intrução sql com os dados do formulario
+        //array_keys($dados) ira receber o nome dos campos da tabela, que também são as chaves dos arrays
+        //depois vai concatenar com o array $campos_criterio
 
         eval($comando);
+        //le comando como uma instrução php
     }
 
     mysqli_stmt_execute($stmt);
+    //executa uma instrução preparada
 
     $retorno = (boolean) mysqli_stmt_affected_rows($stmt);
+    //retorna uma variavel bollean ?
 
     $_SESSION ['errors'] = mysqli_stmt_error_list($stmt);
+    //mostra apenas o erro 'errors'
 
     mysqli_stmt_close($stmt);
+    //fecha uma instrução
 
     desconecta($conexao);
 
@@ -241,10 +261,10 @@ function deleta(string $entidade, array $criterio = []) : bool
         $retorno = false;
     
         $coringa_criterio = [];
-    
+        
         foreach ($criterio as $expressao) {
             $dado = $expressao[count($expressao) -1];
-    
+            
             $tipo[] = gettype($dado) [0];
             $expressao[count($expressao) - 1] = '?';
             $coringa_criterio[] = $expressao;
@@ -260,7 +280,7 @@ function deleta(string $entidade, array $criterio = []) : bool
             $$nome_campo = $dado;
         }
         $instrucao = select($entidade, $campos, $coringa_criterio, $ordem);
-    
+        
         $conexao = conecta();
     
         $stmt = mysqli_prepare($conexao, $instrucao);
@@ -277,9 +297,16 @@ function deleta(string $entidade, array $criterio = []) : bool
         mysqli_stmt_execute($stmt);
 
      if($result = mysqli_stmt_get_result($stmt)){
+         //armazena recebe:
+         //A função PHP mysqli_stmt_get_result() retorna um conjunto de resultados se a instrução executada for SELECT e se for bem-sucedida. 
+         //Em outros cenários esta função retorna FALSE.
+
         $retorno = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        //Busque todas as linhas e retorne o conjunto de resultados como uma matriz associativa:
+
 
         mysqli_free_result($result);
+        //Libera a memória associada ao resultado
      }
         $_SESSION ['errors'] = mysqli_stmt_error_list($stmt);
     
