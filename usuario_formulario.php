@@ -42,7 +42,7 @@
                             //se não, retorna true, zero (0) não é considerado um valor null
                             //se o usuario estiver logado
                            $id = (int) $_SESSION['login']['usuario']['id'];
-
+                            //Session verifica qual o id do usuario se ele estiver logado.
                            $criterio = [
                                 ['id', '=', $id]
                            ];
