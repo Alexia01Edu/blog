@@ -1,4 +1,6 @@
-
+<?php
+// esse formulario atualiza e/ou insere dados
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -66,12 +68,17 @@
                         //echo empty($id) ? 'insert' : 'update'
                         // se o id estiver vazio então inserir dados (insert), se não então atualizar dados (update) 
                         -->
+
                         <input type="hidden" name="id"
                                 value="<?php echo $entidade['id'] ?? '' ?>">
                         <!--
-                        //echo $entidade['id'] ?? ''
-                        //pegar o id na tabela entidade no caso de atualizar dados (update) 
+                        //echo empty($id) ? 'insert' : 'update'
+                        //  ?? operador null coalescing é parecido a expressão if.
+                        //se o usuario estiver logado então buscar o id na tabela $entidade;
+                        //se não então deixar vazio
+                        // se o id estiver vazio então inserir dados (insert), se não então atualizar dados (update) 
                         -->
+
                         <div class="form-group">
                             <label for="nome">Nome</label>
                             <input class="form-control" type="text" 
@@ -79,7 +86,7 @@
                                 value="<?php echo $entidade['nome'] ?? '' ?>">
                         <!--
                         //echo $entidade['nome'] ?? ''
-                        //caso houver, utiliza nome armazenado na tabela $entidade (continua o mesmo se não for modificado)
+                        //caso logado, utiliza nome armazenado na tabela $entidade (continua o mesmo se não for modificado)
                         -->
                         </div>
                         <div class="form-group">
@@ -89,7 +96,7 @@
                                 value="<?php echo $entidade['email'] ?? '' ?>">
                         <!--
                         //echo $entidade['email'] ?? ''
-                        // caso houver, utiliza o email armazenado na tabela $entidade (continua o mesmo se não for modificado)
+                        // caso logado, utiliza o email armazenado na tabela $entidade (continua o mesmo se não for modificado)
                         -->
                         </div>
                         <?php if(!isset($_SESSION['login'])) : ?>

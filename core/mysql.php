@@ -1,5 +1,5 @@
 <?php
-//esse codigo tem as funções responsaveis por criar os parametros para as funções do sql.php
+//esse codigo cria funções que executão as instruções do mysql.php
 //E as conecta com o banco de dados
 //depois as desconecta
 //utilizando as funções tipicas do mysql
@@ -16,8 +16,9 @@ function insere(string $entidade, array $dados) : bool
         //assim como sua chave do array contida na variavel $campo;
         //a chave é um campo do banco de dados 
         $coringa[$campo] = '?';
-        //$coringa é um array que na posição/chave $campo
+        //$coringa é um array que na posição $campo
         //recebe o valor "?";
+        //que depois sera substituido
         $tipo[] = gettype($dado) [0];
         //$tipo[], array que recebe os tipos da variavel dado;
         //gettype - comando que obtem o tipo da variável:
