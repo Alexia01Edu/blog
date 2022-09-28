@@ -33,6 +33,8 @@ function insere(string $entidade, array $dados) : bool
         //Uma variável variável obtém o valor de uma variável e a trata como o nome de uma variável.
         //www.php.net/manual/pt_BR/language.variables.variable.php
     }
+    //NO FIM DO LAÇO O ARRAY $Dados CONTEM AS CHAVES E OS DADOS COM OS MESMOS NOMES
+    //$CAMPOS É UMA VARIAVEL;
 
     $instrucao = insert($entidade, $coringa);
     //insert função do sql.php criada em sql.php 
@@ -75,9 +77,24 @@ function insere(string $entidade, array $dados) : bool
 
 
     eval('mysqli_stmt_bind_param($stmt, \'' . implode('',$tipo) . '\', $' . implode(', $', array_keys($dados)) . ');');
-    //mysqli_stmt_bind_param : junta a $intrução criada pelas funções com os dados inseridos no formulario
+    //$stmt é a intrução ligada ao banco de dados
+    //$tipo são os tipos das variaveis
+    //$dados é o array com as informações do formulario, aqui array_keys pega os nomes dos campos e os tranforma em variaveis.
+    //mysqli_stmt_bind_param : junta a $intrução criada pelas funções do sql.php com os dados inseridos na tabela
     //depois manda eles para o banco de dados.
+
+    //Parametros:
+    //mysqli_stmt_bind_param ( mysqli_stmt $stmt , string $types , mixed &$var1, $var2 ... ) : bool
+    //mixed indica que um parâmetro pode aceitar vários (mas não necessariamente todos) os tipos.
+
+    //EX:
+    //$stmt = mysqli_prepare($link, "INSERT INTO CountryLanguage VALUES (?, ?, ?, ?)");
+    //mysqli_stmt_bind_param($stmt, 'sssd', $code, $language, $official, $percent);
+
     //eval : Executa uma string dada no parametro (), como se ela fosse um código PHP
+    //Ex do comando que ele lerá:
+    //$sql =  "insert into usuario (Nome_usuario, Email_usuario, telefone_usuario) 
+    //VALUES ('".$nome_usuario."', '".$email_usuario."','".$fone_usuario."')";
 
     mysqli_stmt_execute($stmt);
     //mysqli_stmt_execute: Executa uma instrução preparada, armazenada dentro da variavel $stmt
